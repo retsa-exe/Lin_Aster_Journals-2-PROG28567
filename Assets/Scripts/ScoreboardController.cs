@@ -5,7 +5,7 @@ public class ScoreboardController : MonoBehaviour
 {
     public Text scoreText;
 
-    private int score;
+    int score;
 
     //This is a C# property.
     //Score is a variable.

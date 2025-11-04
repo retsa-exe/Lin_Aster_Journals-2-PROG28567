@@ -8,6 +8,9 @@ public class GunshipController : MonoBehaviour
     public GameObject cannonballPrefab;
     public float cannonballForce = 150f;
 
+    bool wasLeftMOusePressed = false;
+    bool wasRightMousePressed = false;
+
     void Update()
     {
         //Takes the mouse position in screen coordinates (pixels) and converts it to world coordinates
@@ -16,6 +19,32 @@ public class GunshipController : MonoBehaviour
         //These methods aim the cannons based on where the mouse is in the 2D space
         Vector3 leftDirection = AimCannon(mousePosition, leftCannon);
         Vector3 rightDirection = AimCannon(mousePosition, rightCannon);
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            wasLeftMOusePressed = true;
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            wasRightMousePressed = true;
+        }
+    }
+    private void FixedUpdate()
+    {
+        if (wasLeftMOusePressed)
+        {
+            GameObject leftCannonball = Instantiate(cannonballPrefab, leftCannon.position, leftCannon.rotation);
+            leftCannonball.GetComponent<Rigidbody2D>().AddForce(leftCannon.right * cannonballForce, ForceMode2D.Impulse);
+            wasLeftMOusePressed = false;
+        }
+
+        if (wasRightMousePressed)
+        {
+            GameObject rightCannonball = Instantiate(cannonballPrefab, rightCannon.position, rightCannon.rotation);
+            rightCannonball.GetComponent<Rigidbody2D>().AddForce(rightCannon.right * cannonballForce, ForceMode2D.Impulse);
+            wasRightMousePressed = false;
+        }
     }
 
     //Given a target position and the transform of a cannon, aims that cannon at that target
