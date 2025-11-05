@@ -3,6 +3,9 @@ using UnityEngine;
 public class Plane : MonoBehaviour
 {
     public Rigidbody2D planeRigidbody;
+
+    public Collider2D planeCollider;
+    public Collider2D targetCollider;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,6 +18,13 @@ public class Plane : MonoBehaviour
     void Update()
     {
         //planeRigidbody.AddForce(Vector2.down, ForceMode2D.Force);
+
+        Physics2D.IgnoreCollision(planeCollider, targetCollider);
+
+        if (Physics2D.GetIgnoreCollision(planeCollider, targetCollider))
+        {
+            Debug.Log("The collision has beeing ignored.");
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

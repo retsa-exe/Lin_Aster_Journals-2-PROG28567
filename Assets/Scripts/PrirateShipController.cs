@@ -1,9 +1,9 @@
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class PrirateShipController : MonoBehaviour
 {
     public ScoreboardController s;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

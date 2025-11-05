@@ -23,5 +23,12 @@ public class RaycastTest : MonoBehaviour
             drawColour = Color.green;
         }
         Debug.DrawLine(startPosition, directionToFire, drawColour);
+
+        RaycastHit2D hit = Physics2D.Linecast(startPosition, mousePosition, targetLayerMask);
+
+        if (hit.collider != null)
+        {
+            Debug.Log("Hit" + hit.collider.name);
+        }
     }
 }
