@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rb;
     public float speed;
-
+    public LayerMask groundTiles;
     public float rayCastOffset;
     public enum FacingDirection
     {
@@ -26,11 +25,11 @@ public class PlayerController : MonoBehaviour
         //The input from the player needs to be determined and then passed in the to the MovementUpdate which should
         //manage the actual movement of the character.
         Vector2 playerInput = new Vector2();
-        if (Input.GetKey(KeyCode.RightArrow) && IsGrounded())
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             playerInput = Vector2.right;
         }
-        if (Input.GetKey(KeyCode.LeftArrow) && IsGrounded())
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             playerInput = Vector2.left;
         }
@@ -57,12 +56,12 @@ public class PlayerController : MonoBehaviour
     }
     public bool IsGrounded()
     {
-        return Physics2D.Raycast(transform.position, Vector2.down, rayCastOffset);
+        return Physics2D.Raycast(transform.position, Vector2.down, rayCastOffset, groundTiles);
     }
 
     public FacingDirection GetFacingDirection()
     {
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (rb.linearVelocityX > 0)
         {
             return FacingDirection.right;
         }
