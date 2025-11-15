@@ -1704,8 +1704,8 @@ MonoBehaviour:
   speed: 3
   groundTiles:
     serializedVersion: 2
-    m_Bits: 0
-  rayCastOffset: 0.1
+    m_Bits: 128
+  rayCastOffset: 0.7
 --- !u!4 &1433354315
 Transform:
   m_ObjectHideFlags: 0
