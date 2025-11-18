@@ -1706,6 +1706,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   rayCastOffset: 0.7
+  apexHeight: 3
+  apexTime: 0.5
+  terminalSpeed: 10
 --- !u!4 &1433354315
 Transform:
   m_ObjectHideFlags: 0
@@ -1752,7 +1755,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

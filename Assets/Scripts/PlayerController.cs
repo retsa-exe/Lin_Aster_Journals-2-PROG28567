@@ -8,6 +8,11 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public LayerMask groundTiles;
     public float rayCastOffset;
+
+    public float apexHeight, apexTime, terminalSpeed;
+    float gravity, initialJumpVelocity;
+
+    bool jumpTrigger = false;
     public enum FacingDirection
     {
         left, right
@@ -17,6 +22,11 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        gravity = -2 * apexHeight / (apexTime * apexTime);
+        initialJumpVelocity = 2 * apexHeight / apexTime;
+
+        jumpTrigger = false;
     }
 
     // Update is called once per frame
@@ -35,10 +45,29 @@ public class PlayerController : MonoBehaviour
         }
         MovementUpdate(playerInput);
 
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        {
+            jumpTrigger = true;
+        }
         //if (IsGrounded() == false)
         //{
         //    Debug.Log("not grounded");
         //}
+    }
+    private void FixedUpdate()
+    {
+        rb.linearVelocityY += gravity * Time.fixedDeltaTime;
+
+        if (jumpTrigger)
+        {
+            rb.linearVelocityY = initialJumpVelocity;
+            jumpTrigger = false;
+        }
+
+        if (rb.linearVelocity.y < - terminalSpeed)
+        {
+            rb.linearVelocityY = - terminalSpeed;
+        }
     }
 
     private void MovementUpdate(Vector2 playerInput)
@@ -69,5 +98,9 @@ public class PlayerController : MonoBehaviour
         {
             return FacingDirection.left;
         }
+    }
+    private void jump()
+    {
+        rb.AddForce(Vector2.up * initialJumpVelocity * 3, ForceMode2D.Impulse);
     }
 }
