@@ -13,6 +13,10 @@ public class PlayerController : MonoBehaviour
     float gravity, initialJumpVelocity;
 
     bool jumpTrigger = false;
+
+    public float coyoteTime;
+    float t;
+
     public enum FacingDirection
     {
         left, right
@@ -45,14 +49,26 @@ public class PlayerController : MonoBehaviour
         }
         MovementUpdate(playerInput);
 
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        if (IsGrounded())
+        {
+            t = coyoteTime;
+        }
+        else
+        {
+            t -= Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && t > 0)
         {
             jumpTrigger = true;
+            t = 0;
         }
         //if (IsGrounded() == false)
         //{
         //    Debug.Log("not grounded");
         //}
+
+        //Debug.Log(rb.linearVelocity.y);
     }
     private void FixedUpdate()
     {
@@ -98,9 +114,5 @@ public class PlayerController : MonoBehaviour
         {
             return FacingDirection.left;
         }
-    }
-    private void jump()
-    {
-        rb.AddForce(Vector2.up * initialJumpVelocity * 3, ForceMode2D.Impulse);
     }
 }
