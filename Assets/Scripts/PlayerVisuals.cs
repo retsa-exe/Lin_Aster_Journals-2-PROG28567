@@ -12,13 +12,16 @@ public class PlayerVisuals : MonoBehaviour
     public SpriteRenderer bodyRenderer;
     public PlayerController playerController;
 
-    private int isWalkingHash, isGroundedHash;
+    private int idleHash, jumpingHash, walkingHash, deathHash;
 
     // Start is called before the first frame update
     void Start()
     {
-        isWalkingHash = Animator.StringToHash("IsWalking");
-        isGroundedHash = Animator.StringToHash("IsGrounded");
+        bodyRenderer = GetComponent<SpriteRenderer>();
+        idleHash = Animator.StringToHash("Idle");
+        jumpingHash = Animator.StringToHash("Jumping");
+        walkingHash = Animator.StringToHash("Walking");
+        deathHash = Animator.StringToHash("Death");
     }
 
     // Update is called once per frame
@@ -30,8 +33,30 @@ public class PlayerVisuals : MonoBehaviour
     //It is not recommended to make changes to the functionality of this code for the W10 journal.
     private void VisualsUpdate()
     {
-        animator.SetBool(isWalkingHash, playerController.IsWalking());
-        animator.SetBool(isGroundedHash, playerController.IsGrounded());
+        //animator.SetBool(isWalkingHash, playerController.IsWalking());
+        //animator.SetBool(isGroundedHash, playerController.IsGrounded());
+
+        if (playerController.currentState != playerController.previousState)
+        {
+            if (playerController.currentState == PlayerController.CharacterState.idle)
+            {
+                animator.Play(idleHash);
+            }
+            if (playerController.currentState == PlayerController.CharacterState.walk)
+            {
+                animator.Play(walkingHash);
+            }
+            if (playerController.currentState == PlayerController.CharacterState.jump)
+            {
+                animator.Play(jumpingHash);
+            }
+        }
+
+        if (playerController.HasDied())
+        {
+            animator.Play(deathHash);
+        }
+
         switch (playerController.GetFacingDirection())
         {
             case PlayerController.FacingDirection.left:

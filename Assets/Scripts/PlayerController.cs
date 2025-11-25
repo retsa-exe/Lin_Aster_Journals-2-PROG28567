@@ -17,10 +17,21 @@ public class PlayerController : MonoBehaviour
     public float coyoteTime;
     float t;
 
+    public int health;
+    bool hasDied;
+
     public enum FacingDirection
     {
         left, right
     }
+
+    public enum CharacterState
+    {
+        idle, walk, jump, death
+    }
+
+    public CharacterState currentState = CharacterState.idle;
+    public CharacterState previousState;
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +59,7 @@ public class PlayerController : MonoBehaviour
             playerInput = Vector2.left;
         }
         MovementUpdate(playerInput);
+        StateUpdate();
 
         if (IsGrounded())
         {
@@ -69,6 +81,7 @@ public class PlayerController : MonoBehaviour
         //}
 
         //Debug.Log(rb.linearVelocity.y);
+
     }
     private void FixedUpdate()
     {
@@ -113,6 +126,40 @@ public class PlayerController : MonoBehaviour
         else
         {
             return FacingDirection.left;
+        }
+    }
+
+    public bool HasDied()
+    {
+        bool isDead = health <= 0;
+        if (isDead && hasDied == false)
+        {
+            hasDied = true;
+            return true;
+        }
+        return false;
+    }
+
+    void StateUpdate()
+    {
+        previousState = currentState;
+
+        if (IsWalking() && IsGrounded())
+        {
+            currentState = CharacterState.walk;
+        }
+        else if (!IsGrounded())
+        {
+            currentState = CharacterState.jump;
+        }
+        else
+        {
+            currentState = CharacterState.idle;
+        }
+
+        if (health <= 0)
+        {
+            currentState = CharacterState.death;
         }
     }
 }
