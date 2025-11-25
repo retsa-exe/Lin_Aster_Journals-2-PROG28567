@@ -17,7 +17,6 @@ public class PlayerVisuals : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        bodyRenderer = GetComponent<SpriteRenderer>();
         idleHash = Animator.StringToHash("Idle");
         jumpingHash = Animator.StringToHash("Jumping");
         walkingHash = Animator.StringToHash("Walking");
