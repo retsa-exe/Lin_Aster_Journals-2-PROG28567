@@ -47,12 +47,13 @@ public class PlayerController : MonoBehaviour
         Vector2 playerInput = new Vector2();
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            playerInput = Vector2.right;
+            playerInput.x += 1;
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            playerInput = Vector2.left;
+            playerInput.x -= 1;
         }
+
         MovementUpdate(playerInput);
 
         if (IsGrounded())
@@ -106,7 +107,7 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 amountChanged = deceleration * currentVelocity.normalized * Time.deltaTime;
 
-            if (amountChanged.magnitude > currentVelocity.x)
+            if (amountChanged.magnitude > Mathf.Abs(currentVelocity.x))
             {
                 currentVelocity.x = 0;
             }
@@ -115,7 +116,7 @@ public class PlayerController : MonoBehaviour
                 currentVelocity -= amountChanged;
             }
         }
-            rb.linearVelocity = currentVelocity;
+        rb.linearVelocity = currentVelocity;
     }
 
     public bool IsWalking()
