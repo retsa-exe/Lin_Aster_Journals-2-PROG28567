@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
                 currentVelocity -= amountChanged;
             }
         }
-        rb.linearVelocity = currentVelocity;
+        rb.linearVelocity = new Vector2(currentVelocity.x, rb.linearVelocity.y);
     }
 
     public bool IsWalking()
