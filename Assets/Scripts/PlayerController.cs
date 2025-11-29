@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -25,6 +27,13 @@ public class PlayerController : MonoBehaviour
 
     Vector3 currentVelocity;
 
+    //dash variables
+    public float dashdistance, dashDuration;
+    bool isDashing;
+    float dashTimer;
+    float dashSpeed;
+    float dashDirection;
+
     public enum FacingDirection
     {
         left, right
@@ -47,10 +56,16 @@ public class PlayerController : MonoBehaviour
         initialJumpVelocity = 2 * apexHeight / apexTime;
 
         jumpTrigger = false;
+        hasDied = false;
+        isDashing = false;
+        dashTimer = 0;
 
         //calculate acceleration and deceleration
         acceleration = speed / accelerationTime;
         deceleration = speed / decelerationTime;
+
+        //calculate the dash speed
+        dashSpeed = dashdistance / dashDuration;
     }
 
     // Update is called once per frame
@@ -91,6 +106,23 @@ public class PlayerController : MonoBehaviour
 
         //Debug.Log(rb.linearVelocity.y);
 
+        //perform dash when press z
+        if (Input.GetKeyDown(KeyCode.Z) && !isDashing)
+        {
+            isDashing = true;
+            dashTimer = dashDuration;
+
+            //determine dash direction
+            if (GetFacingDirection() == FacingDirection.right)
+            {
+                dashDirection = 1;
+            }
+            else
+            {
+                dashDirection = -1;
+            }
+        }
+
     }
     private void FixedUpdate()
     {
@@ -106,10 +138,29 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocityY = - terminalSpeed;
         }
+
+        //dashing logic
+        if (isDashing)
+        {
+            rb.linearVelocityX = dashDirection * dashSpeed;
+            //decrease the dash timer
+            dashTimer -= Time.fixedDeltaTime;
+            //stop dashing if timer is up
+            if (dashTimer <= 0)
+            {
+                isDashing = false;
+            }
+        }
     }
 
     private void MovementUpdate(Vector2 playerInput)
     {
+        //block horizontal movement when dashing
+        if (isDashing)
+        {
+            return;
+        }
+
         //rb.linearVelocityX = playerInput.x * speed;
         if (playerInput.x != 0)
         {
