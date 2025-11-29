@@ -1711,6 +1711,10 @@ MonoBehaviour:
   terminalSpeed: 10
   coyoteTime: 0.5
   health: 10
+  accelerationTime: 0.3
+  decelerationTime: 0.3
+  currentState: 0
+  previousState: 0
 --- !u!4 &1433354315
 Transform:
   m_ObjectHideFlags: 0
