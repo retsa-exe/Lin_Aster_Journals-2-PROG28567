@@ -34,6 +34,9 @@ public class PlayerController : MonoBehaviour
     float dashSpeed;
     float dashDirection;
 
+    //double jump variables
+    bool doubleJumpAvailable;
+    bool isDoubleJump;
     public enum FacingDirection
     {
         left, right
@@ -55,10 +58,12 @@ public class PlayerController : MonoBehaviour
         gravity = -2 * apexHeight / (apexTime * apexTime);
         initialJumpVelocity = 2 * apexHeight / apexTime;
 
+        //initialize variables
         jumpTrigger = false;
         hasDied = false;
         isDashing = false;
         dashTimer = 0;
+        isDoubleJump = false;
 
         //calculate acceleration and deceleration
         acceleration = speed / accelerationTime;
@@ -88,16 +93,29 @@ public class PlayerController : MonoBehaviour
         if (IsGrounded())
         {
             t = coyoteTime;
+
+            //reset double jump when grounded
+            isDoubleJump = false;
+            doubleJumpAvailable = true;
         }
         else
         {
             t -= Time.deltaTime;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && t > 0)
+        //jump input
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            jumpTrigger = true;
-            t = 0;
+            if (t > 0)
+            {
+                jumpTrigger = true;
+                t = 0;
+            }
+            else if (doubleJumpAvailable)
+            {
+                isDoubleJump = true;
+                doubleJumpAvailable = false;
+            }
         }
         //if (IsGrounded() == false)
         //{
@@ -128,10 +146,16 @@ public class PlayerController : MonoBehaviour
     {
         rb.linearVelocityY += gravity * Time.fixedDeltaTime;
 
-        if (jumpTrigger)
+        if (jumpTrigger && !isDoubleJump)
         {
             rb.linearVelocityY = initialJumpVelocity;
             jumpTrigger = false;
+        }
+
+        if (isDoubleJump)
+        {
+            rb.linearVelocityY = initialJumpVelocity;
+            isDoubleJump = false;
         }
 
         if (rb.linearVelocity.y < - terminalSpeed)
