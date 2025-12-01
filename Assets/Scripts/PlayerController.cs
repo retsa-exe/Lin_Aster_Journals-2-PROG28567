@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     Vector3 currentVelocity;
 
     //dash variables
-    public float dashdistance, dashDuration;
+    public float dashDistance, dashDuration;
     bool isDashing;
     float dashTimer;
     float dashSpeed;
@@ -37,6 +37,9 @@ public class PlayerController : MonoBehaviour
     //double jump variables
     bool doubleJumpAvailable;
     bool isDoubleJump;
+
+    //variable jump variables
+    public float jumpRatio;
     public enum FacingDirection
     {
         left, right
@@ -70,7 +73,7 @@ public class PlayerController : MonoBehaviour
         deceleration = speed / decelerationTime;
 
         //calculate the dash speed
-        dashSpeed = dashdistance / dashDuration;
+        dashSpeed = dashDistance / dashDuration;
     }
 
     // Update is called once per frame
@@ -174,6 +177,12 @@ public class PlayerController : MonoBehaviour
             {
                 isDashing = false;
             }
+        }
+
+        //variable jump logic
+        if (!Input.GetKey(KeyCode.Space) && rb.linearVelocity.y > 0)
+        {
+            rb.linearVelocityY *= jumpRatio;
         }
     }
 

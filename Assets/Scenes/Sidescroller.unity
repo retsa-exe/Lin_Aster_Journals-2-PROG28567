@@ -1713,8 +1713,9 @@ MonoBehaviour:
   health: 10
   accelerationTime: 0.3
   decelerationTime: 0.3
-  dashdistance: 2
+  dashDistance: 0
   dashDuration: 0.5
+  jumpRatio: 0.7
   currentState: 0
   previousState: 0
 --- !u!4 &1433354315
