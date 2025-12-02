@@ -40,6 +40,9 @@ public class PlayerController : MonoBehaviour
 
     //variable jump variables
     public float jumpRatio;
+
+    //slow fall variables
+    public float slowFallSpeed;
     public enum FacingDirection
     {
         left, right
@@ -176,6 +179,15 @@ public class PlayerController : MonoBehaviour
             if (dashTimer <= 0)
             {
                 isDashing = false;
+            }
+        }
+
+        //slow fall logic
+        if (Input.GetKey(KeyCode.X) && rb.linearVelocity.y < 0 && !IsGrounded())
+        {
+            if (rb.linearVelocity.y < -slowFallSpeed)
+            {
+                rb.linearVelocityY = -slowFallSpeed;
             }
         }
 

@@ -1716,6 +1716,7 @@ MonoBehaviour:
   dashDistance: 0
   dashDuration: 0.5
   jumpRatio: 0.7
+  slowFallSpeed: 2
   currentState: 0
   previousState: 0
 --- !u!4 &1433354315
